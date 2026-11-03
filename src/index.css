@@ -1,0 +1,14 @@
+
+body {
+  font-family: Arial, sans-serif;
+  background: white;
+  color: #333;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+#root {
+    position: relative;
+    z-index: 9999;
+}
