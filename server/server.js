@@ -1,9 +1,10 @@
-
+require("dotenv").config();
+const connectMongoDB = require("./mongodb");
 const express = require("express");
 const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 5000;
-
+const mongoPropertyRoutes = require("./routes/mongoPropertyRoutes");
 // Middleware to read JSON data
 app.use(express.json());
 app.use(cors());
@@ -12,6 +13,7 @@ const propertyRoutes = require("./routes/propertyRoutes");
 const enquiryRoutes = require("./routes/enquiryRoutes");
 const crudRoutes = require("./routes/crudRoutes");
 // Use property routes
+app.use("/api/mongodb/properties", mongoPropertyRoutes);
 app.use("/api/properties", propertyRoutes);
 app.use("/api/enquiries", enquiryRoutes);
 app.use("/api/crud/properties", crudRoutes);
@@ -24,6 +26,12 @@ app.get("/", (req, res) => {
 });
 
 // Start the server
-app.listen(PORT, () => {
-    console.log(`Rently server running at http://localhost:${PORT}`);
-});
+const startServer = async () => {
+    await connectMongoDB();
+
+    app.listen(PORT, () => {
+        console.log(`Rently server running at http://localhost:${PORT}`);
+    });
+};
+
+startServer();
